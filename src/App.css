@@ -1,0 +1,12 @@
+/* Toast styling */
+.Toastify__toast {
+  font-family: 'Poppins', sans-serif;
+}
+
+.Toastify__toast--success {
+  background-color: #F28C1B;
+}
+
+.Toastify__toast--error {
+  background-color: #e74c3c;
+}
