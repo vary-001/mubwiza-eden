@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { 
   faBars, 
@@ -17,11 +17,46 @@ export default function Navbar({ cartItems, removeFromCart, clearCart, updateQua
   const [languageDropdownOpen, setLanguageDropdownOpen] = useState(false);
   const [activeLanguage, setActiveLanguage] = useState('ENG');
   const [cartOpen, setCartOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState('');
 
   const languages = ['ENG', 'FRA', 'KINY'];
   const navItems = ['Products', 'Flower Info', 'Delivery', 'Our Story', 'Contact'];
 
   const cartItemCount = cartItems.reduce((total, item) => total + item.quantity, 0);
+
+  // Smooth scroll to section
+  const scrollToSection = (sectionId) => {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      window.scrollTo({
+        top: element.offsetTop - 80, // Adjust for navbar height
+        behavior: 'smooth'
+      });
+    }
+    setMobileMenuOpen(false);
+  };
+
+  // Track active section for highlighting
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollPosition = window.scrollY + 100;
+      
+      navItems.forEach(item => {
+        const section = document.getElementById(item.toLowerCase().replace(' ', '-'));
+        if (section) {
+          const sectionTop = section.offsetTop;
+          const sectionHeight = section.offsetHeight;
+          
+          if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
+            setActiveSection(item.toLowerCase().replace(' ', '-'));
+          }
+        }
+      });
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   return (
     <>
@@ -30,31 +65,47 @@ export default function Navbar({ cartItems, removeFromCart, clearCart, updateQua
           <div className="flex justify-between items-center">
             {/* Logo with Image */}
             <div className="flex items-center">
-              <a href="#" className="flex items-center transition duration-300 hover:opacity-80">
-                <img 
-                  src={Logo} 
-                  alt="MUbwiza Eden Logo"
-                  className="h-10 w-auto mr-2"
-                  onError={(e) => {
-                    e.target.onerror = null;
-                    e.target.src = "data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23F28C1B'/%3E%3Ctext x='50%' y='50%' font-size='20' fill='white' text-anchor='middle' dominant-baseline='middle'%3ELogo%3C/text%3E%3C/svg%3E";
-                  }}
-                />
-                <span className="hidden sm:inline text-xl font-bold text-orange">MUbwiza Eden</span>
+              <a 
+                href="#" 
+                className="flex items-center transition duration-300 hover:opacity-80"
+                onClick={(e) => {
+                  e.preventDefault();
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                }}
+              >
+                <div className="relative h-10 w-10">
+                  <img 
+                    src={Logo} 
+                    alt="MUbwiza Eden Logo"
+                    className="absolute -top-2 h-14 w-auto"
+                    onError={(e) => {
+                      e.target.onerror = null;
+                      e.target.src = "data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23F28C1B'/%3E%3Ctext x='50%' y='50%' font-size='20' fill='white' text-anchor='middle' dominant-baseline='middle'%3ELogo%3C/text%3E%3C/svg%3E";
+                    }}
+                  />
+                </div>
+                <span className="hidden sm:inline text-xl font-bold text-orange ml-3">MUbwiza Eden</span>
               </a>
             </div>
             
             {/* Desktop Navigation */}
             <div className="hidden lg:flex items-center space-x-1">
-              {navItems.map((item) => (
-                <a 
-                  key={item} 
-                  href={`#${item.toLowerCase().replace(' ', '-')}`} 
-                  className="px-4 py-2 text-charcoal hover:text-orange transition font-medium rounded-lg hover:bg-orange/5"
-                >
-                  {item}
-                </a>
-              ))}
+              {navItems.map((item) => {
+                const sectionId = item.toLowerCase().replace(' ', '-');
+                return (
+                  <button
+                    key={item}
+                    onClick={() => scrollToSection(sectionId)}
+                    className={`px-4 py-2 transition font-medium rounded-lg ${
+                      activeSection === sectionId
+                        ? 'text-orange bg-orange/10'
+                        : 'text-charcoal hover:text-orange hover:bg-orange/5'
+                    }`}
+                  >
+                    {item}
+                  </button>
+                );
+              })}
             </div>
             
             {/* Right Side Icons */}
@@ -129,43 +180,6 @@ export default function Navbar({ cartItems, removeFromCart, clearCart, updateQua
                 )}
               </button>
               
-              {/* Language Dropdown - Mobile */}
-              <div className="relative md:hidden">
-                <button 
-                  onClick={() => setLanguageDropdownOpen(!languageDropdownOpen)}
-                  className="flex items-center p-2 text-charcoal hover:text-orange transition rounded-lg hover:bg-orange/5"
-                  aria-label="Language selector"
-                >
-                  <FontAwesomeIcon icon={faGlobe} className="text-base" />
-                  <span>{activeLanguage}</span>
-                  <FontAwesomeIcon 
-                    icon={faChevronDown} 
-                    className={`text-xs transition-transform duration-200 ${
-                      languageDropdownOpen ? 'transform rotate-180' : ''
-                    }`} 
-                  />
-                </button>
-                
-                {languageDropdownOpen && (
-                  <div className="absolute right-0 mt-2 w-24 bg-white rounded-lg shadow-lg py-1 z-50 border border-gray-100">
-                    {languages.map((lang) => (
-                      <button
-                        key={lang}
-                        className={`w-full text-left px-4 py-2 text-sm text-charcoal hover:bg-orange/10 hover:text-orange ${
-                          activeLanguage === lang ? 'bg-orange/10 text-orange font-medium' : ''
-                        }`}
-                        onClick={() => {
-                          setActiveLanguage(lang);
-                          setLanguageDropdownOpen(false);
-                        }}
-                      >
-                        {lang}
-                      </button>
-                    ))}
-                  </div>
-                )}
-              </div>
-              
               {/* Mobile Menu Button */}
               <button 
                 className="lg:hidden p-2 text-charcoal rounded-lg hover:bg-orange/5 transition"
@@ -182,16 +196,22 @@ export default function Navbar({ cartItems, removeFromCart, clearCart, updateQua
             mobileMenuOpen ? 'max-h-screen opacity-100' : 'max-h-0 opacity-0'
           }`}>
             <div className="container mx-auto px-4 py-3">
-              {navItems.map((item) => (
-                <a 
-                  key={item}
-                  href={`#${item.toLowerCase().replace(' ', '-')}`} 
-                  className="block py-3 px-2 text-charcoal hover:text-orange transition font-medium rounded-lg hover:bg-orange/5"
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  {item}
-                </a>
-              ))}
+              {navItems.map((item) => {
+                const sectionId = item.toLowerCase().replace(' ', '-');
+                return (
+                  <button
+                    key={item}
+                    onClick={() => scrollToSection(sectionId)}
+                    className={`block w-full text-left py-3 px-2 transition font-medium rounded-lg ${
+                      activeSection === sectionId
+                        ? 'text-orange bg-orange/10'
+                        : 'text-charcoal hover:text-orange hover:bg-orange/5'
+                    }`}
+                  >
+                    {item}
+                  </button>
+                );
+              })}
               
               {/* Mobile Login */}
               <a 

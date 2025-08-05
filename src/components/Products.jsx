@@ -1,3 +1,5 @@
+// src/pages/Products.jsx (or wherever this component is)
+
 import { useState, useEffect } from 'react';
 import { db } from '../firebase';
 import { collection, onSnapshot, query, orderBy } from 'firebase/firestore';
@@ -11,68 +13,73 @@ import 'react-loading-skeleton/dist/skeleton.css';
 import toast from 'react-hot-toast';
 import { AnimatePresence, motion } from 'framer-motion';
 
-const PRODUCTS_PER_PAGE = 8;
+// Import the new SiteBanner component
+import SiteBanner from '../components/SiteBanner'; // Adjust the path if necessary
 
+const PRODUCTS_PER_PAGE = 4;
+
+// ... (ProductSkeleton and ImageViewModal components remain the same) ...
 const ProductSkeleton = () => (
-  <div className="bg-white rounded-2xl overflow-hidden shadow-lg border border-sand/20 flex flex-col">
-    <Skeleton height={256} />
-    <div className="p-6 flex flex-col flex-grow">
-      <Skeleton height={28} width="80%" />
-      <div className="mt-2">
-        <Skeleton count={3} />
-      </div>
-      <div className="flex justify-between items-center mt-5">
-        <Skeleton height={44} width={140} />
-        <Skeleton height={20} width={60} />
+    <div className="bg-white rounded-2xl overflow-hidden shadow-lg border border-sand/20 flex flex-col">
+      <Skeleton height={256} />
+      <div className="p-6 flex flex-col flex-grow">
+        <Skeleton height={28} width="80%" />
+        <div className="mt-2">
+          <Skeleton count={3} />
+        </div>
+        <div className="flex justify-between items-center mt-5">
+          <Skeleton height={44} width={140} />
+          <Skeleton height={20} width={60} />
+        </div>
       </div>
     </div>
-  </div>
-);
-
-const ImageViewModal = ({ imageUrl, onClose }) => {
-  return (
-    <AnimatePresence>
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        className="fixed inset-0 z-50 flex items-center justify-center p-4"
-      >
-        {/* Blur Background */}
-        <motion.div
-          initial={{ backdropFilter: 'blur(0px)' }}
-          animate={{ backdropFilter: 'blur(8px)' }}
-          exit={{ backdropFilter: 'blur(0px)' }}
-          className="fixed inset-0 bg-black/50"
-          onClick={onClose}
-        />
-        
-        {/* Modal Content */}
-        <motion.div
-          initial={{ scale: 0.9, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          exit={{ scale: 0.9, opacity: 0 }}
-          className="relative z-50 max-w-4xl w-full"
-          onClick={(e) => e.stopPropagation()}
-        >
-          <button
-            onClick={onClose}
-            className="absolute -top-12 right-0 text-white hover:text-orange transition-transform duration-200 hover:scale-110"
-          >
-            <FontAwesomeIcon icon={faTimes} className="text-3xl" />
-          </button>
-          <div className="bg-white rounded-xl overflow-hidden shadow-2xl">
-            <img
-              src={imageUrl}
-              alt="Product preview"
-              className="w-full h-auto max-h-[80vh] object-contain"
-            />
-          </div>
-        </motion.div>
-      </motion.div>
-    </AnimatePresence>
   );
-};
+  
+  const ImageViewModal = ({ imageUrl, onClose }) => {
+    return (
+      <AnimatePresence>
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          className="fixed inset-0 z-50 flex items-center justify-center p-4"
+        >
+          {/* Blur Background */}
+          <motion.div
+            initial={{ backdropFilter: 'blur(0px)' }}
+            animate={{ backdropFilter: 'blur(8px)' }}
+            exit={{ backdropFilter: 'blur(0px)' }}
+            className="fixed inset-0 bg-black/50"
+            onClick={onClose}
+          />
+          
+          {/* Modal Content */}
+          <motion.div
+            initial={{ scale: 0.9, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            exit={{ scale: 0.9, opacity: 0 }}
+            className="relative z-50 max-w-4xl w-full"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              onClick={onClose}
+              className="absolute -top-12 right-0 text-white hover:text-orange transition-transform duration-200 hover:scale-110"
+            >
+              <FontAwesomeIcon icon={faTimes} className="text-3xl" />
+            </button>
+            <div className="bg-white rounded-xl overflow-hidden shadow-2xl">
+              <img
+                src={imageUrl}
+                alt="Product preview"
+                className="w-full h-auto max-h-[80vh] object-contain"
+              />
+            </div>
+          </motion.div>
+        </motion.div>
+      </AnimatePresence>
+    );
+  };
+  
 
 export default function Products({ addToCart }) {
   const [allProducts, setAllProducts] = useState([]);
@@ -92,7 +99,7 @@ export default function Products({ addToCart }) {
     { id: 'vegetables', name: 'Vegetables', icon: faCarrot }
   ];
 
-  // Effect to fetch products from Firestore
+  // ... (useEffect hooks and other functions remain the same) ...
   useEffect(() => {
     setIsLoading(true);
     const productsQuery = query(collection(db, 'products'), orderBy('createdAt', 'desc'));
@@ -206,71 +213,78 @@ export default function Products({ addToCart }) {
     ));
   };
 
+
   return (
-    <section id="products" className="py-16 md:py-24 bg-ivory-white font-poppins">
-      <div className="container mx-auto px-4">
-        {/* Section Header */}
-        <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold text-mahogany mb-4">Our Floral Collection</h2>
-          <p className="text-lg text-charcoal max-w-2xl mx-auto">Beautifully arranged flowers for every occasion, handpicked with care in Musanze.</p>
-        </div>
-        
-        {/* Filters and Search */}
-        <div className="flex flex-col items-center mb-12">
-          <div className="flex flex-wrap justify-center gap-2 md:gap-3 mb-6 w-full">
-            {categories.map(category => (
+    // Use a Fragment (<>) to wrap the components
+    <>
+      {/* RENDER THE BANNER AT THE TOP */}
+      <SiteBanner />
+
+      <section id="products" className="py-16 md:py-24 bg-ivory-white font-poppins">
+        <div className="container mx-auto px-4">
+          {/* Section Header */}
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold text-mahogany mb-4">Our Floral Collection</h2>
+            <p className="text-lg text-charcoal max-w-2xl mx-auto">Beautifully arranged flowers for every occasion, handpicked with care in Musanze.</p>
+          </div>
+          
+          {/* Filters and Search */}
+          <div className="flex flex-col items-center mb-12">
+            <div className="flex flex-wrap justify-center gap-2 md:gap-3 mb-6 w-full">
+              {categories.map(category => (
+                <button
+                  key={category.id}
+                  className={`px-4 md:px-5 py-2 rounded-full font-medium shadow-md transition-all flex items-center text-sm md:text-base ${
+                    activeCategory === category.id
+                      ? 'bg-orange text-white ring-2 ring-offset-2 ring-amber'
+                      : 'bg-white text-charcoal border border-sand hover:bg-ivory-white hover:border-amber/50'
+                  }`}
+                  onClick={() => setActiveCategory(category.id)}
+                >
+                  <FontAwesomeIcon icon={category.icon} className="mr-2.5" />
+                  {category.name}
+                </button>
+              ))}
+            </div>
+            <div className="relative w-full max-w-lg mt-4">
+              <input
+                type="text"
+                placeholder="Search products by name..."
+                value={searchTerm}
+                onChange={e => setSearchTerm(e.target.value)}
+                className="w-full pl-12 pr-4 py-3 rounded-full border border-sand focus:outline-none focus:ring-2 focus:ring-orange/50 shadow-sm font-poppins"
+              />
+              <FontAwesomeIcon icon={faSearch} className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-400" />
+            </div>
+          </div>
+          
+          {/* Product Grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+            {renderProductGrid()}
+          </div>
+
+          {/* Load More Button */}
+          {!isLoading && visibleCount < filteredProducts.length && (
+            <div className="text-center mt-12">
               <button
-                key={category.id}
-                className={`px-4 md:px-5 py-2 rounded-full font-medium shadow-md transition-all flex items-center text-sm md:text-base ${
-                  activeCategory === category.id
-                    ? 'bg-orange text-white ring-2 ring-offset-2 ring-amber'
-                    : 'bg-white text-charcoal border border-sand hover:bg-ivory-white hover:border-amber/50'
-                }`}
-                onClick={() => setActiveCategory(category.id)}
+                onClick={handleLoadMore}
+                className="bg-mahogany text-ivory-white font-bold font-poppins py-3 px-8 rounded-full shadow-lg hover:bg-amber focus:outline-none focus:ring-4 focus:ring-amber/50 transition-all duration-300 transform hover:scale-105 flex items-center mx-auto"
               >
-                <FontAwesomeIcon icon={category.icon} className="mr-2.5" />
-                {category.name}
+                <FontAwesomeIcon icon={faChevronDown} className="mr-3" />
+                View More Products
               </button>
-            ))}
-          </div>
-          <div className="relative w-full max-w-lg mt-4">
-            <input
-              type="text"
-              placeholder="Search products by name..."
-              value={searchTerm}
-              onChange={e => setSearchTerm(e.target.value)}
-              className="w-full pl-12 pr-4 py-3 rounded-full border border-sand focus:outline-none focus:ring-2 focus:ring-orange/50 shadow-sm font-poppins"
+            </div>
+          )}
+
+          {/* Image View Modal */}
+          {viewedImage && (
+            <ImageViewModal 
+              imageUrl={viewedImage} 
+              onClose={() => setViewedImage(null)} 
             />
-            <FontAwesomeIcon icon={faSearch} className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-400" />
-          </div>
+          )}
         </div>
-        
-        {/* Product Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-          {renderProductGrid()}
-        </div>
-
-        {/* Load More Button */}
-        {!isLoading && visibleCount < filteredProducts.length && (
-          <div className="text-center mt-12">
-            <button
-              onClick={handleLoadMore}
-              className="bg-mahogany text-ivory-white font-bold font-poppins py-3 px-8 rounded-full shadow-lg hover:bg-amber focus:outline-none focus:ring-4 focus:ring-amber/50 transition-all duration-300 transform hover:scale-105 flex items-center mx-auto"
-            >
-              <FontAwesomeIcon icon={faChevronDown} className="mr-3" />
-              View More Products
-            </button>
-          </div>
-        )}
-
-        {/* Image View Modal */}
-        {viewedImage && (
-          <ImageViewModal 
-            imageUrl={viewedImage} 
-            onClose={() => setViewedImage(null)} 
-          />
-        )}
-      </div>
-    </section>
+      </section>
+    </>
   );
 }
