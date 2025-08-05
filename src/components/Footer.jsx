@@ -24,7 +24,7 @@ export default function Footer() {
                 }}
               />
               <span className="text-2xl font-bold text-orange">MUbwiza</span>
-              <FontAwesomeIcon icon={faSpa} className="text-yellow ml-1 text-xl" />
+
               <span className="text-xl font-medium text-white ml-1">Eden</span>
             </div>
             <p className="text-white/80">Bringing the beauty of Rwanda's flowers to your home, hotel, or special event since 2010.</p>
@@ -32,11 +32,11 @@ export default function Footer() {
             {/* Enhanced Social Media */}
             <div className="flex space-x-3 pt-2">
               {[
-                { icon: faFacebookF, color: 'hover:bg-blue-600' },
-                { icon: faInstagram, color: 'hover:bg-pink-600' },
-                { icon: faTwitter, color: 'hover:bg-blue-400' },
+                { icon: faFacebookF, color: 'hover:bg-green-600' },
+                { icon: faInstagram, color: 'hover:bg-green-600' },
+                { icon: faTwitter, color: 'hover:bg-green-400' },
                 { icon: faWhatsapp, color: 'hover:bg-green-500' },
-                { icon: faPinterestP, color: 'hover:bg-red-600' }
+                { icon: faPinterestP, color: 'hover:bg-green-600' }
               ].map((social, index) => (
                 <a 
                   key={index}
@@ -123,7 +123,7 @@ export default function Footer() {
         <div className="border-t border-orange/30 pt-8 text-center">
           <p className="text-orange/80 text-sm">
             &copy; {new Date().getFullYear()} MUbwiza Eden. All rights reserved. | 
-            Designed with <span className="text-red-400">♥</span> by Dev Charm
+            Designed with <span className="text-red-400">♥</span> by Vary.Dev
           </p>
         </div>
       </div>

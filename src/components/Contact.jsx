@@ -9,7 +9,7 @@ export default function Contact() {
         <div className="text-center mb-16">
           <span className="text-orange font-semibold tracking-widest">GET IN TOUCH</span>
           <h2 className="text-4xl md:text-5xl font-bold text-mahogany mt-3 mb-4">
-            Contact <span className="text-amber">MUbwiza Eden</span>
+            Contact <span className="text-amber">Mubwiza Eden</span>
           </h2>
           <div className="w-24 h-1 bg-gradient-to-r from-orange to-amber mx-auto mb-6"></div>
           <p className="text-lg text-charcoal/80 max-w-3xl mx-auto">
@@ -91,7 +91,7 @@ export default function Contact() {
               {/* Map */}
               <div className="rounded-xl overflow-hidden h-64">
                 <iframe 
-                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3987.634038933092!2d29.63667731533094!3d-1.499999998691601!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMcKwMjknNTkuOSJTIDI5wrAzOCcyMS4xIkU!4v1620000000000!5m2!1sen!2srw" 
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d249.2782737789791!2d29.634580524870508!3d-1.499302460036685!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x19dc5a44d351f0b9%3A0x45d6737c7446d79f!2sMuhabura%20Integrated%20Polytechnic%20College%20Garden!5e0!3m2!1sen!2srw!4v1754398974508!5m2!1sen!2srw" 
                   width="100%" 
                   height="100%" 
                   style={{border:0}}

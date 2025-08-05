@@ -34,8 +34,8 @@ export default function Delivery() {
   const deliveryAreas = [
     'Musanze City Center',
     'Kinigi',
-    'Shingiro',
-    'Nyange',
+    'Musanze markets',
+    'Kizungu village ',
     'MIPC College',
     'Hotels & Lodges',
     'Wedding Venues'

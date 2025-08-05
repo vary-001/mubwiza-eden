@@ -20,7 +20,7 @@ const CartModal = ({ isOpen, onClose, cartItems, removeFromCart, clearCart, upda
     ).join('\n')}\n\nTotal: ${calculateTotal().toLocaleString()} RWF\n\nMy details: [Your Name, Address, Phone Number]`;
 
     const encodedMessage = encodeURIComponent(message);
-    window.open(`https://wa.me/250787000000?text=${encodedMessage}`, '_blank');
+    window.open(`https://wa.me/250788759351?text=${encodedMessage}`, '_blank');
     
     toast.success('Redirecting to WhatsApp for checkout!');
     clearCart();

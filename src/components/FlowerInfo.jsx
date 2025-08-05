@@ -193,7 +193,7 @@ export default function ProductInfo() {
                       <FontAwesomeIcon icon={faLeaf} className="text-xl" />
                     </div>
                     <div>
-                      <h4 className="font-bold text-lg">Dr. Jean Claude Niyomugabo</h4>
+                      <h4 className="font-bold text-lg">Manager.HAKIZIMANA Dominique.</h4>
                       <p className="text-white/80">Head of Conservation, MUbwiza Eden</p>
                     </div>
                   </div>
